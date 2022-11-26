@@ -12,7 +12,6 @@
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -20,10 +19,59 @@
         const app = Vue.createApp({
             data() {
                 return {
-
+                    name: 'Giacomo',
+                    lastName: 'Franco',
+                    age: 18,
+                    now: new Date(),
+                    numberToMultiply: null,
+                    numberReceived: null,
                 }
-            }
-        }).mount('#app')
+                    
+            },
+            computed: {
+                fullName(){
+                    return `${this.name} ${this.lastName}`
+                },
+                todayIs(){
+                    return this.now.toLocaleDateString();
+                },
+                doubleAge(){
+                    return this.age * 2;
+                },
+                multiply(){
+                    return this.numberToMultiply * this.numberReceived;
+                }
+            },
+            methods: {
+                number(){
+                    return this.numberReceived;
+                },
+                updateVariables(e){
+                    if (e.target.className === "numToMultiply") {
+                        this.numberToMultiply = e.target.value
+                    }
+                    else{
+                        this.numberReceived = e.target.value
+                    }
+                }
+            },
+            template:`
+            <h1>Sin computadas 🥱</h1>
+            <h2>Mi nombre es {{name}} {{lastName}}</h2>
+            <h2>Hoy es {{now.toLocaleDateString()}}</h2>
+            <h2>y hasta ahora he vivido {{age}} años 👶, y pasados otros {{age}} tendré {{age * 2}} 🧔</h2>
+            <hr>
+            <h1>Con computadas 🤩</h1>
+            <h2>Mi nombre es {{fullName}}</h2>
+            <h2>Hoy es {{todayIs}}</h2>
+            <h2>y hasta ahora he vivido {{age}} años 👶, y pasados otros {{age}} tendré {{doubleAge}} 🧔</h2>
+            <hr>
+            <h1>Este es un ejercicio para pasarle un parámetro a una computada :)</h1>
+            <input class="numToMultiply" @change="updateVariables" type="number"/>
+            <input class="numReceived" @change="updateVariables" type="number"/>
+            <h2>El número que multiplicarás es {{numberToMultiply}}, y al multiplicarlo por {{numberReceived}} da un total de <b>{{multiply}}</b></h2>
+            `
+        }).mount('#app  ')
 
     </script>
 </body>
