@@ -12,19 +12,40 @@
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
+        
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const app = Vue.createApp({
-            data() {
+            data(){
                 return {
-
+                    text: "Hola Vue 🤗",
+                    text2: "Un saludito a Vue 🙇‍♂️"
                 }
-            }
+            },
+            methods: {
+                reactiveInput(e){
+                    this.text = e.target.value
+                },
+                reactiveInput2(e){
+                    this.text2 = e.target.value
+                },
+            },
+            template: ` 
+            <h1>{{text}}</h1>
+            <input
+                type="text"
+                    @input="reactiveInput"
+                    :value="text"
+            />
+            <h1>{{text2}}</h1>
+            <input
+                type="text"
+                    v-model="text2"
+            />
+            `
         }).mount('#app')
-
     </script>
 </body>
 
