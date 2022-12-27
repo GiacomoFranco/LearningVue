@@ -20,9 +20,75 @@
         const app = Vue.createApp({
             data() {
                 return {
-
+                    textToWatch: 'Este es el texto predeterminado a observar 👀',
+                    prevText:'',
+                    verifyText: '',
+                    arthur: {
+                        animal: 'Perro',
+                        raza: 'Samoyedo',
+                    },
+                    arrayRaro:[
+                        'arroz','leche','erda'
+                    ]
                 }
-            }
+            },
+            methods: {
+                listenInput(e){
+                    this.textToWatch = e.target.value;
+                },
+                changueArthurData(property, value){
+                    let copiedObject = this.arthur;
+                    if(property === 'animal'){
+                        copiedObject.animal = value;
+                    }
+                    else{
+                        copiedObject.raza = value;
+                    }
+                    this.arthur = copiedObject
+                },
+                changueArrayData(value){
+                    let copiedArray = this.arrayRaro.slice(0);
+                    copiedArray.push(value)
+                    this.arrayRaro = copiedArray;
+                }
+            },
+            watch: {
+                textToWatch(newValue, prevValue){
+                    if(newValue === ':)'){
+                        this.verifyText = 'La variable es :)';
+                    }
+                    else{
+                        this.verifyText = 'Por ahora la variable no es :)';                        
+                    }
+                    this.prevText = prevValue
+                },
+                arthur: {
+                    handler(newValue, oldValue){
+                        // console.log(`parce lo que cambió fue de ${oldValue} a ${newValue}`);
+                        console.log(oldValue);
+                        console.log(newValue);
+                    },
+                    deep:true
+                },
+                arrayRaro: {
+                  hanlder(newValue, prevValue){
+                    console.log(oldValue);
+                    console.log(newValue);
+                  },
+                  deep: true
+                },
+                'arthur.animal'(newValue){
+                    console.log(`Artur ahora es un ${newValue}`);
+                }
+            },
+            template: `
+            <h1>{{textToWatch}}</h1>
+            <input type="text" @change="listenInput"/>
+            <hr>
+            <h1>Anteriormente en el título de arriba decía {{prevText}}</h1>
+            <h1>{{verifyText}}</h1>
+            `,
+            
         }).mount('#app')
 
     </script>
