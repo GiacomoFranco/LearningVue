@@ -8,11 +8,12 @@
     <link rel="shortcut icon" href="https://vuejs.org/logo.svg" type="image/x-icon">
     <title>This is Vue 🥳</title>
 </head>
-
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
+        <div class="rectangle" :style="styles"> </div>
+        <h1 :class="state ? 'abierta' : 'cerrada' ">{{state ? 'Puerta Abierta' : 'Puerta Cerrada'}}</h1>
+        <button @click="toggle">{{state ? 'Cerrar' : 'Abrir'}}</button>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -20,12 +21,63 @@
         const app = Vue.createApp({
             data() {
                 return {
-
+                    state: true,
+                    styles:{
+                        backgroundColor: 'blue'
+                    }
+                }
+            },
+            methods: {
+                toggle(){
+                    this.state = !this.state
+                }
+            },
+            watch:{
+                state(newValue){
+                    if(newValue){
+                        this.styles.backgroundColor = 'green';
+                    }
+                    else{
+                        this.styles.backgroundColor = 'red'
+                    }
                 }
             }
         }).mount('#app')
 
     </script>
+    <style>
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 800px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button{
+            color: white;
+            background-color: black;
+            border: none;
+            border-radius: 20px;
+            height: 40px;
+        }
+        .cerrada{
+            color: red;
+        }
+        
+        .abierta{
+            color: green;
+        }
+        .rectangle{
+            height: 300px;
+            width: 100%;
+            background-color: blueviolet;
+        }
+        #app{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
 </body>
 
 </html>
