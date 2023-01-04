@@ -12,7 +12,28 @@
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
+        <div v-if="!loged" class="login">
+            <h1>Registrate</h1>
+            <input type="text" id="usernameInput">
+            <p v-if="errorMsg" class="error">debes de ingresar tu usuario</p>
+            <button @click="logIn">Ingresar</button>
+        </div>
+        <div v-else>
+            <p>Bienvenido <span style="color: green; font-weight: bold;">{{username}}</span>!</p>
+            <h1>Publicaciones</h1>
+            <div v-for="(publication, i) in publications" class="publication">
+                <div class="left">
+                    <h2>{{publication.title}}</h2>
+                    <p>{{publication.description}}</p>
+                </div>
+                <div class="right">
+                    <button @click="deletePost(i,1)">Delete</button>
+                    <button>Edit</button>
+                </div>
+            </div>
+            <button @click="addPost('Titulo', 'description')">Agregar un nuevo post</button>
+            
+        </div>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -20,12 +41,119 @@
         const app = Vue.createApp({
             data() {
                 return {
-
+                    loged: false,
+                    errorMsg: false,
+                    username: null,
+                    publications: [
+                        {
+                            title: 'Titulo 1',
+                            description : 'Lorem bla bla ipsum bla bla'
+                        },
+                        {
+                            title: 'Titulo 2',
+                            description : 'Lorem bla bla ipsum bla bla'
+                        }
+                    ]
+                            
                 }
-            }
+            },
+            methods: {
+                logIn(){
+                    let usernameInput = document.getElementById('usernameInput').value
+                    if(usernameInput != ''){
+                        this.username = usernameInput
+                        this.loged = !this.loged
+                    }
+                    else{
+                        this.errorMsg = true
+                    }
+                },
+                deletePost(i, del){
+                    this.publications.splice(i,del)
+                },
+                addPost(titulo, descripcion){
+                    this.publications.push({title: titulo, description: descripcion})
+                }
+            }   
         }).mount('#app')
 
     </script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: white;
+        }
+        html{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+
+        button, input{
+            border: none;
+            border-radius: 20px;
+            height: 40px;
+            margin-top: 20px;
+        }
+        
+        input{
+            padding-left: 20px;
+            width: 500px;
+            color: black;
+        }
+
+        button{
+            transition: 500ms;
+            width: 200px;
+            background: none;
+            border: 1px solid white;
+            cursor: pointer;
+        }
+
+        button:hover{
+            transition: 500ms;
+            background-color: white;
+            color: black;
+        }
+
+        p{
+           
+        }
+
+        .login{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .error{
+            margin-top: 20px;
+            color: red;
+        }
+
+        .publication{
+            margin-top: 20px;
+            width: 600px;
+            border: 1px solid white;
+            padding: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .right{
+            width: 200px;
+        }
+    
+
+    </style>
 </body>
 
 </html>
