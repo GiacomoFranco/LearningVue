@@ -12,19 +12,43 @@
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const app = Vue.createApp({
-            data() {
-                return {
-
+            data(){
+                return{
+                    items : ['uno', 'dos', 'tres','cuatro','cinco','seis']
+                }
+            },
+            methods: {
+                removeItems(i){
+                    this.items = this.items.filter((item, index) => index !== i)
                 }
             }
-        }).mount('#app')
+            ,
+            template: `
+            <ul>
+                <v-item
+                    v-for="(item, i) in items"
+                    v-bind:itemTransfer="item"
+                    @click="removeItems(i)"
+                />    
+            </ul>
+            `
+        });
 
+        app.component('v-item', {
+            props: {
+                itemTransfer: String
+            },
+            template: `
+                <li>{{itemTransfer}}</li>
+            `
+        })
+
+        const vm = app.mount('#app')
     </script>
 </body>
 
