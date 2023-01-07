@@ -12,18 +12,47 @@
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const app = Vue.createApp({
-            data() {
+            data(){
+                return{
+                    text: 'This is the text that I want to provide 🤔'
+                }
+            },
+            provide(){
                 return {
-
+                    textToProvide: this.text
                 }
             }
-        }).mount('#app')
+            ,
+            template: `
+            <p>{{text}}</p>
+            <v-first />
+            `
+        });
+
+        app.component('v-first',{
+            template: `
+            <v-second />
+            `
+        })
+
+        app.component('v-second',{
+            // inject:['textToProvide'],
+            inject: {
+                textToInject: {
+                    from: 'textToProvide'
+                }
+            },
+            template:`
+            <p>{{textToInject}}</p>
+            `
+        })
+        
+        const vm = app.mount('#app')
 
     </script>
 </body>
