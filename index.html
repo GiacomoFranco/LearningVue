@@ -33,7 +33,7 @@
                 <v-item
                     v-for="(item, i) in items"
                     v-bind:itemTransfer="item"
-                    @click="removeItems(i)"
+                    @remove="removeItems(i)"
                 />    
             </ul>
             `
@@ -43,8 +43,14 @@
             props: {
                 itemTransfer: String
             },
+            methods: {
+                remove(){
+                        this.$emit('remove')
+                }
+            }
+            ,
             template: `
-                <li>{{itemTransfer}}</li>
+                <li @click="remove">{{itemTransfer}}</li>
             `
         })
 
