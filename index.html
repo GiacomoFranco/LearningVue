@@ -12,18 +12,47 @@
 <body>
 
     <div id="app">
-        <h1>{{texto}}</h1>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const app = Vue.createApp({
-            data() {
-                return {
-
+            data(){
+                return{
+                    text: 'this is my text ;)'
+                }
+            },
+            methods: {
+                updateText(valueEmited){
+                    this.text = valueEmited; 
                 }
             }
-        }).mount('#app')
+            ,
+            template: `
+            <div>
+                <p>{{text}}</p>
+                <v-input :value="text" @updateTextEmitter="updateText"/>    
+            </div>
+            `
+        });
+
+        app.component('v-input', {
+            props:{
+                value: String
+            },
+            methods:{
+                emitText(e){
+                    console.log(e.target.value);
+                    this.$emit('updateTextEmitter', e.target.value)
+                }
+            }
+            ,
+            template: `
+            <input type="text" :value="value" @input="emitText">
+            `
+        })
+        
+        const vm = app.mount('#app')
 
     </script>
 </body>
