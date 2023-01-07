@@ -15,45 +15,74 @@
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
+    <!-- <script>
         const app = Vue.createApp({
             data(){
                 return{
                     text: 'this is my text ;)'
                 }
             },
-            methods: {
-                updateText(valueEmited){
-                    this.text = valueEmited; 
-                }
-            }
-            ,
             template: `
             <div>
                 <p>{{text}}</p>
-                <v-input :value="text" @updateTextEmitter="updateText"/>    
+                <v-input v-model:valueInput="text"/>    
             </div>
             `
         });
 
         app.component('v-input', {
             props:{
-                value: String
+                valueInput: String
             },
             methods:{
                 emitText(e){
-                    console.log(e.target.value);
-                    this.$emit('updateTextEmitter', e.target.value)
+                    this.$emit('update:valueInput', e.target.value)
+       
                 }
             }
             ,
             template: `
-            <input type="text" :value="value" @input="emitText">
+            <input type="text" :value="valueInput" @input="emitText">
             `
         })
         
         const vm = app.mount('#app')
 
+    </script> -->
+    <script>
+        const app = Vue.createApp({
+            data(){
+                return{
+                    text: 'This is my text 🤗',
+                    text2: 'This is another text'
+                }
+            },
+            template:`
+            <div>
+                <p>{{text2}}</p>
+                <input type="text" v-model="text2"/>
+                <p>{{text}}</p>
+                <v-input v-model:textFather="text"/>
+            </div>
+            `
+        });
+
+        app.component('v-input',{
+            props:{
+                textFather: String
+            },
+            methods:{
+                update(e){
+                    this.$emit('update:textFather', e.target.value)
+                }
+            },
+            template:`
+            <input type="text" :value="textFather" @input="update"/>
+            `
+            
+        })
+
+        const vm = app.mount('#app')
     </script>
 </body>
 
