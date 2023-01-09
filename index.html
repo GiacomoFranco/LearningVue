@@ -40,7 +40,7 @@
         const app = Vue.createApp({
             data(){
                 return{
-                    items : ['uno', 'dos', 'tres']
+                    items : ['uno', 'dos', 'tres',,]
                 }
             },
             template: `
@@ -51,7 +51,11 @@
         });
 
         app.component('v-item', {
-            props: ['itemTransfer'],
+            props: {
+                itemTransfer: {
+                    default: 'Texto Vacío'
+                },
+            },
             template: `
                 <li>{{itemTransfer}}</li>
             `
